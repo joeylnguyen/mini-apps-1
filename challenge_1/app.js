@@ -1,19 +1,23 @@
 const cells = document.getElementsByTagName('td');
 console.log(cells);
 
+
+let turnChecker = false;
+
 for (var i = 0; i < cells.length; i++) {
   cells[i].addEventListener('click', (e) => {
-    // if ()
-    toggleSymbol(e.target);
+    turnChecker = !turnChecker;
+    toggleSymbol(e.target, turnChecker);
   });
 }
 
-// const clickHandler = (cell) {
-//   if (cell.target)
-// }
+const checkTurn = () => {
 
-const toggleSymbol = (cell, player) => {
-  if (cell.innerHTML === "") {
+}
+
+const toggleSymbol = (cell, turn) => {
+  console.log(turn);
+  if (turn) {
     cell.innerHTML = 'X';
   } else {
     cell.innerHTML = 'O';
