@@ -2,12 +2,23 @@ const cells = document.getElementsByTagName('td');
 console.log(cells);
 
 for (var i = 0; i < cells.length; i++) {
-  cells[i].addEventListener('click', (e) => console.log('Clicked!', e));
-};
+  cells[i].addEventListener('click', (e) => {
+    // if ()
+    toggleSymbol(e.target);
+  });
+}
 
-// cells.forEach(cell => cell.addEventListener('click', (e) => console.log('Clicked!', e)));
+// const clickHandler = (cell) {
+//   if (cell.target)
+// }
 
-
+const toggleSymbol = (cell, player) => {
+  if (cell.innerHTML === "") {
+    cell.innerHTML = 'X';
+  } else {
+    cell.innerHTML = 'O';
+  }
+}
 
 
 
