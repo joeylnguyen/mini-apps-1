@@ -1,30 +1,29 @@
 const cells = document.getElementsByTagName('td');
-console.log(cells);
 
 
 let turnChecker = false;
 
-for (var i = 0; i < cells.length; i++) {
-  cells[i].addEventListener('click', (e) => {
-    turnChecker = !turnChecker;
-    toggleSymbol(e.target, turnChecker);
-  });
+const createNewBoard = () => {
+  for (var i = 0; i < cells.length; i++) {
+    console.log(cells[i].innerHTML);
+    cells[i].style.fontSize = '50px';
+    cells[i].style.width = '85px';
+    cells[i].style.height = '85px';
+    cells[i].style.textAlign = 'center';
+    cells[i].addEventListener('click', (e) => clickHandler(e))
+  };
 }
 
-const checkTurn = () => {
-
+const clickHandler = (event) => {
+  turnChecker = !turnChecker;
+  toggleSymbol(event.target, turnChecker);
 }
 
-const toggleSymbol = (cell, turn) => {
-  console.log(turn);
-  if (turn) {
-    cell.innerHTML = 'X';
-  } else {
-    cell.innerHTML = 'O';
-  }
+const toggleSymbol = (cell, turn) => (turn ? cell.innerHTML = 'X' : cell.innerHTML = 'O')
+
+window.onload = () => {
+    createNewBoard();
 }
-
-
 
 // class Board {
 //   constructor() {
