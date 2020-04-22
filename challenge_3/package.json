@@ -1,0 +1,22 @@
+{
+  "name": "challenge_3",
+  "version": "1.0.0",
+  "description": "Multi-step checkout app",
+  "scripts": {
+    "test": "live-server index.html",
+    "start": "babel . --out-dir compiled --presets=react --ignore=node_modules,compiled --source-maps inline --watch"
+  },
+  "author": "Joey Nguyen",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-react": "^1.0.0",
+    "babel-preset-react": "^6.24.1",
+    "nodemon": "^2.0.3"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
