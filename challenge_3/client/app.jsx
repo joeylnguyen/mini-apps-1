@@ -2,7 +2,8 @@ class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      form: 'F1'
+      form: 'F1',
+      done: false
     }
   }
 
@@ -18,7 +19,7 @@ class App extends React.Component {
 
     return (
       <div>
-        <Form labels={labels} />
+        {this.state.done ? <h1>Your order has been placed!</h1> : <Form labels={labels} />}
       </div>
     )
   }
