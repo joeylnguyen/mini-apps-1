@@ -4,7 +4,7 @@
   "description": "Multi-step checkout app",
   "scripts": {
     "test": "live-server /public/index.html",
-    "start": "babel . --out-dir compiled --presets=react --ignore=node_modules,compiled --source-maps inline --watch"
+    "start": "./node_modules/.bin/babel client --out-dir public --presets=react --source-maps inline --watch"
   },
   "author": "Joey Nguyen",
   "license": "UNLICENSED",
