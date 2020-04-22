@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Multi-step checkout app",
   "scripts": {
-    "test": "live-server index.html",
+    "test": "live-server /public/index.html",
     "start": "babel . --out-dir compiled --presets=react --ignore=node_modules,compiled --source-maps inline --watch"
   },
   "author": "Joey Nguyen",
