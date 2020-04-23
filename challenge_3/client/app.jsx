@@ -4,60 +4,66 @@ class App extends React.Component {
     this.state = {
       form: 1,
       done: false,
-      sessionId: 1
+      sessionId: 1,
+      data: {}
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.addData = this.addData.bind(this);
-    this.incrementsessionId = this.incrementsessionId.bind(this);
+    // this.incrementsessionId = this.incrementsessionId.bind(this);
     this.changeForm = this.changeForm.bind(this);
+    this.compileData = this.compileData.bind(this);
   }
-  changeForm () {
-    console.log(`Changing form from ${this.state.form} to ${this.state.form + 1}...`);
-    this.state.form < 3 ? this.setState({form: this.state.form + 1}) : this.setState({done: true});
 
-    console.log('Form value: ', this.state.form);
-
-    this.incrementsessionId();
-  }
 
   // TODO Change this to getSessionId because we want to get the ID from the database once the component mounts... maybe remove completely and handle in componentDidMount?
-  incrementsessionId () {
-    console.log('Verifying session ID...');
-    if (this.state.done) {
-      this.setState({sessionId: this.state.sessionId++})
-    }
-    console.log('Current session ID :', this.state.sessionId);
+  // incrementsessionId () {
+  //   console.log('Verifying session ID...');
+  //   if (this.state.done) {
+  //     this.setState({sessionId: this.state.sessionId + 1})
+  //   }
+  //   console.log('Current session ID :', this.state.sessionId);
+  // }
+
+  compileData (data) {
+    let prevData = this.state.data;
+    let newData = Object.assign(prevData, data);
+
+    this.setState({data: newData})
+  }
+
+  changeForm () {
+    this.state.form < 3 ? this.setState({form: this.state.form + 1}) : this.addData(this.state.data);
   }
 
   //TODO Figure out a usecase for this handleChange... might not need? Could possibly use as a checker for empty values
   handleChange (event) {
-    console.log(`${event.target.name}: `, event.target.value);
+    // console.log(`${event.target.name}: `, event.target.value);
   }
-
 
   handleSubmit (event) {
     event.preventDefault();
-    console.log(event.target.children);
+    // console.log(event.target.children);
     let inputData = {sessionId: this.state.sessionId};
     const inputArray = event.target.children;
 
     for (let i = 0; i < inputArray.length - 1; i++) {
-      let inputName = inputArray[i].children[0].name;
+      let inputName = inputArray[i].children[0].name.replace(/\s+/g, '_').toLowerCase();
       let inputValue = inputArray[i].children[0].value;
 
       if (inputData[inputName] === undefined) {
         inputData[inputName] = inputValue;
       }
     }
-    console.log(inputData);
-    this.addData(inputData);
+    // console.log('INPUT DATA: ', inputData);
+    this.compileData(inputData);
+    this.changeForm();
   };
   // TODO: Possibly refactor so we send the post request in one batch by only invoking addData when we've submitted the last form. We can store the previous form data in state
   addData (data) {
     axios.post('http://localhost:3000/', data)
       .then(response => {
-        this.changeForm();
+        this.setState({done: true})
         console.log(response)})
       .catch(error => console.log(error))
   }
@@ -106,88 +112,3 @@ const Entry = ({label, handleChange}) => {
 
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
-// const 1 = () => {
-//   return (
-//     <form>
-//       <div>
-//         <label> Name
-//           <input type="text"></input>
-//         </label>
-//       </div>
-//       <div>
-//         <label> Email
-//           <input type="text"></input>
-//         </label>
-//       </div>
-//       <div>
-//         <label> Password
-//           <input type="text"></input>
-//         </label>
-//       </div>
-//       <input type="submit"></input>
-//     </form>
-//   )
-// }
-
-
-// const F2 = () => {
-//   return (
-//     <form>
-//       <div>
-//         <label> Address 1
-//           <input type="text"></input>
-//         </label>
-//       </div>
-//       <div>
-//         <label> Address 2
-//           <input type="text"></input>
-//         </label>
-//       </div>
-//       <div>
-//         <label> City
-//           <input type="text"></input>
-//         </label>
-//       </div>
-//       <div>
-//         <label> State
-//           <input type="text"></input>
-//         </label>
-//       </div>
-//       <div>
-//         <label> Zip
-//           <input type="text"></input>
-//         </label>
-//       </div>
-//       <input type="submit"></input>
-//     </form>
-//   )
-// }
-
-// const F3 = () => {
-//   return (
-//     <form>
-//       <div>
-//         <label> Credit Card Number
-//           <input type="text"></input>
-//         </label>
-//       </div>
-//       <div>
-//         <label> Expiration Date
-//           <input type="text"></input>
-//         </label>
-//       </div>
-//       <div>
-//         <label> CVV
-//           <input type="text"></input>
-//         </label>
-//       </div>
-//       <div>
-//         <label> Billing Zip Code
-//           <input type="text"></input>
-//         </label>
-//       </div>
-//       <input type="submit"></input>
-//     </form>
-//   )
-// }
