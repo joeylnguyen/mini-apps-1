@@ -53,7 +53,7 @@ class App extends React.Component {
     console.log(inputData);
     this.addData(inputData);
   };
-
+  // TODO: Possibly refactor so we send the post request in one batch by only invoking addData when we've submitted the last form. We can store the previous form data in state
   addData (data) {
     axios.post('http://localhost:3000/', data)
       .then(response => {
