@@ -2,12 +2,32 @@ class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      form: 'F1',
-      done: false
+      form: 1,
+      done: false,
+      sessionId: 1
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.addData = this.addData.bind(this);
+    this.incrementsessionId = this.incrementsessionId.bind(this);
+    this.changeForm = this.changeForm.bind(this);
+  }
+  changeForm () {
+    console.log(`Changing form from ${this.state.form} to ${this.state.form + 1}...`);
+    this.state.form < 3 ? this.setState({form: this.state.form + 1}) : this.setState({done: true});
+
+    console.log('Form value: ', this.state.form);
+
+    this.incrementsessionId();
+  }
+
+  // TODO Change this to getSessionId because we want to get the ID from the database once the component mounts... maybe remove completely and handle in componentDidMount?
+  incrementsessionId () {
+    console.log('Verifying session ID...');
+    if (this.state.done) {
+      this.setState({sessionId: this.state.sessionId++})
+    }
+    console.log('Current session ID :', this.state.sessionId);
   }
 
   //TODO Figure out a usecase for this handleChange... might not need? Could possibly use as a checker for empty values
@@ -20,7 +40,7 @@ class App extends React.Component {
   handleSubmit (event) {
     event.preventDefault();
     console.log(event.target.children);
-    let inputData = {};
+    let inputData = {sessionId: this.state.sessionId};
     const inputArray = event.target.children;
 
     for (let i = 0; i < inputArray.length - 1; i++) {
@@ -37,24 +57,31 @@ class App extends React.Component {
 
   addData (data) {
     axios.post('http://localhost:3000/', data)
-      .then(response => console.log(response))
+      .then(response => {
+        this.changeForm();
+        console.log(response)})
       .catch(error => console.log(error))
+  }
+
+  componentDidMount () {
+    //TODO Do a get request to get the next available ID from the database and then change the ID state to whatever that value is
+    //TODO Need to reset form value to 1 and done state to false on load
   }
 
   render () {
     let labels = [];
-    if (this.state.form === 'F1') {
+    if (this.state.form === 1) {
       labels = ['Name', 'Email', 'Password'];
-    } else if (this.state.form === 'F2') {
+    } else if (this.state.form === 2) {
       labels = ['Address 1', 'Address 2', 'City', 'State', 'Zip'];
-    } else if (this.state.form === 'F3') {
+    } else if (this.state.form === 3) {
       labels = ['Credit Card Number', 'Expiration Date', 'CVV', 'Billing Zip']
     }
     // TODO: Reformat elements to look more like a form
     // TODO: Add stylesheet
     return (
       <div>
-        {this.state.done ? <h1>Your order has been placed!</h1> : <Form labels={labels} handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>}
+        {this.state.done ? <h1>{`Your order has been placed! Order ID: ${this.state.sessionId}`}</h1> : <Form labels={labels} handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>}
       </div>
     )
   }
@@ -81,7 +108,7 @@ const Entry = ({label, handleChange}) => {
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
-// const F1 = () => {
+// const 1 = () => {
 //   return (
 //     <form>
 //       <div>
