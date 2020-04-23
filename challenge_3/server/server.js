@@ -17,9 +17,7 @@ app.use((req, res, next) => {
 })
 
 // ROUTERS
-app.get('/', (req, res) => {
-  res.send('hello!');
-})
+app.get('/id', handleGetId);
 
 app.post('/', handlePostData);
 

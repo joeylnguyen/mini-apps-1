@@ -10,20 +10,10 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.addData = this.addData.bind(this);
-    // this.incrementsessionId = this.incrementsessionId.bind(this);
     this.changeForm = this.changeForm.bind(this);
     this.compileData = this.compileData.bind(this);
+    this.getSessionId = this.getSessionId.bind(this);
   }
-
-
-  // TODO Change this to getSessionId because we want to get the ID from the database once the component mounts... maybe remove completely and handle in componentDidMount?
-  // incrementsessionId () {
-  //   console.log('Verifying session ID...');
-  //   if (this.state.done) {
-  //     this.setState({sessionId: this.state.sessionId + 1})
-  //   }
-  //   console.log('Current session ID :', this.state.sessionId);
-  // }
 
   compileData (data) {
     let prevData = this.state.data;
@@ -55,7 +45,6 @@ class App extends React.Component {
         inputData[inputName] = inputValue;
       }
     }
-    // console.log('INPUT DATA: ', inputData);
     this.compileData(inputData);
     this.changeForm();
   };
@@ -68,9 +57,20 @@ class App extends React.Component {
       .catch(error => console.log(error))
   }
 
+  getSessionId () {
+    console.log('Verifying session ID...');
+    axios.get('http://localhost:3000/id')
+      .then(response => {
+        let newId = response.data[0]['MAX(id)'] + 1;
+        this.setState({sessionId: newId});
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
   componentDidMount () {
-    //TODO Do a get request to get the next available ID from the database and then change the ID state to whatever that value is
-    //TODO Need to reset form value to 1 and done state to false on load
+    this.getSessionId();
   }
 
   render () {
