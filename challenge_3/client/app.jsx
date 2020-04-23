@@ -35,7 +35,6 @@ class App extends React.Component {
     console.log(`${event.target.name}: `, event.target.value);
   }
 
-  //TODO Change form state after handleSubmit runs
 
   handleSubmit (event) {
     event.preventDefault();
