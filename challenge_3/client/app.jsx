@@ -2,10 +2,35 @@ class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      form: 'F1',
+      form: 'F2',
       done: false
     }
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
+
+  //TODO Figure out a usecase for this handleChange... might not need? Could possibly use as a checker for empty values
+  handleChange (event) {
+    console.log(`${event.target.name}: `, event.target.value);
+  }
+
+  handleSubmit (event) {
+    event.preventDefault();
+    console.log(event.target.children);
+    let inputData = {};
+    const inputArray = event.target.children;
+
+    for (let i = 0; i < inputArray.length - 1; i++) {
+      let inputName = inputArray[i].children[0].name;
+      let inputValue = inputArray[i].children[0].value;
+
+      if (inputData[inputName] === undefined) {
+        inputData[inputName] = inputValue;
+      }
+    }
+    console.log(inputData);
+
+  };
 
   render () {
     let labels = [];
@@ -19,27 +44,26 @@ class App extends React.Component {
 
     return (
       <div>
-        {this.state.done ? <h1>Your order has been placed!</h1> : <Form labels={labels} />}
+        {this.state.done ? <h1>Your order has been placed!</h1> : <Form labels={labels} handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>}
       </div>
     )
   }
 }
 
-const Form = ({labels}) => {
-  let entries = labels.map(label => <Entry label={label} key={label}/>)
+const Form = ({labels, handleSubmit, handleChange}) => {
+  let entries = labels.map(label => <Entry label={label} key={label} handleChange={handleChange}/>)
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       {entries}
       <input type="submit"></input>
     </form>
   )
 }
 
-const Entry = ({label}) => {
-  console.log(label);
+const Entry = ({label, handleChange}) => {
   return (
     <label> {label}
-      <input type="text"></input>
+      <input type="text" name={label} onChange={handleChange}></input>
     </label>
   )
 }
