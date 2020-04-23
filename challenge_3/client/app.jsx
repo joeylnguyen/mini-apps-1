@@ -2,17 +2,20 @@ class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      form: 'F2',
+      form: 'F1',
       done: false
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.addData = this.addData.bind(this);
   }
 
   //TODO Figure out a usecase for this handleChange... might not need? Could possibly use as a checker for empty values
   handleChange (event) {
     console.log(`${event.target.name}: `, event.target.value);
   }
+
+  //TODO Change form state after handleSubmit runs
 
   handleSubmit (event) {
     event.preventDefault();
@@ -29,8 +32,14 @@ class App extends React.Component {
       }
     }
     console.log(inputData);
-
+    this.addData(inputData);
   };
+
+  addData (data) {
+    axios.post('http://localhost:3000/', data)
+      .then(response => console.log(response))
+      .catch(error => console.log(error))
+  }
 
   render () {
     let labels = [];
@@ -41,7 +50,8 @@ class App extends React.Component {
     } else if (this.state.form === 'F3') {
       labels = ['Credit Card Number', 'Expiration Date', 'CVV', 'Billing Zip']
     }
-
+    // TODO: Reformat elements to look more like a form
+    // TODO: Add stylesheet
     return (
       <div>
         {this.state.done ? <h1>Your order has been placed!</h1> : <Form labels={labels} handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>}
